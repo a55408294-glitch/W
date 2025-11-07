@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eco-Access : 모두를 위한 기후 정보 길잡이</title>
+
+<style>
+    :root {
+        --green-main: #1c6e42; 
+        --green-soft: #dff3e8; 
+        --bg: #f5f8f6; 
+        --white: #ffffff;
+    }
+
+    body {
+        font-family: "Noto Sans KR", sans-serif;
+        margin: 0;
+        background: var(--bg);
+        color: #222;
+    }
+
+    header {
+        background: var(--green-main);
+        color: var(--white);
+        padding: 25px;
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 600;
+        border-bottom: 5px solid #14532d;
+    }
+
+    main {
+        width: 90%;
+        max-width: 980px;
+        margin: auto;
+        padding: 20px 0;
+    }
+
+    .section {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 22px;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-left: 6px solid var(--green-main);
+    }
+
+    h2 {
+        margin-top: 0;
+        color: var(--green-main);
+    }
+
+    button {
+        padding: 10px 16px;
+        border: none;
+        background: var(--green-main);
+        color: var(--white);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 10px;
+        font-size: 0.95rem;
+    }
+
+    button:hover {
+        background: #145b32;
+    }
+
+    .result-box {
+        margin-top: 15px;
+        padding: 14px;
+        background: var(--green-soft);
+        border-radius: 10px;
+        border-left: 5px solid var(--green-main);
+    }
+
+    input, select {
+        padding: 8px;
+        margin: 7px 0;
+        width: 90%;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+    footer {
+        text-align: center;
+        padding: 16px;
+        color: #666;
+        font-size: 0.9rem;
+        background: var(--white);
+        border-top: 4px solid var(--green-main);
+    }
+</style>
+
+</head>
+<body>
+
+<header>
+    Eco-Access : 모두를 위한 기후 정보 길잡이
+</header>
+
+<main>
+
+    <!-- ✅ Section 1 — Introduce -->
+    <section class="section">
+        <h2>🌏 기후 위기, 왜 중요한가?</h2>
+        <p>
+            기후 위기는 더 이상 먼 나라 이야기가 아닙니다.<br>
+            폭염, 홍수, 산불과 같은 문제는 지금 우리가 사는 지역에서도 나타나고 있습니다.<br>
+            올바른 이해와 실천이 필요합니다.
+        </p>
+    </section>
+
+
+    <!-- ✅ Section 2 — Daily Action -->
+    <section class="section">
+        <h2>✅ 오늘의 실천 1가지</h2>
+        <button onclick="pickAction()">추천 받기</button>
+        <div id="actionBox" class="result-box"></div>
+    </section>
+
+
+    <!-- ✅ Section 3 — Carbon Calculator -->
+    <section class="section">
+        <h2>🔎 탄소발자국 간단 계산기</h2>
+        <label>하루 버스 이용(분): </label><br>
+        <input id="bus" type="number" placeholder="0"><br>
+
+        <label>하루 전기 사용(kWh): </label><br>
+        <input id="elec" type="number" placeholder="0"><br>
+
+        <button onclick="calcCarbon()">계산</button>
+        <div id="carbonResult" class="result-box"></div>
+    </section>
+
+
+    <!-- ✅ Section 4 — 지역별 기후 영향 안내 -->
+    <section class="section">
+        <h2>📍 우리 지역 기후 영향</h2>
+
+        <select id="region">
+            <option value="">지역 선택</option>
+            <option value="seoul">서울</option>
+            <option value="busan">부산</option>
+            <option value="incheon">인천</option>
+            <option value="jeju">제주</option>
+        </select>
+        <button onclick="showRegion()">확인</button>
+
+        <div id="regionBox" class="result-box"></div>
+    </section>
+
+</main>
+
+<footer>
+    © 2025 Eco-Access Project
+</footer>
+
+
+<script>
+/* ✅ 오늘의 실천 */
+const actions = [
+    "대중교통 이용하기",
+    "텀블러 사용하기",
+    "플라스틱 줄이기",
+    "쓰레기 10분 줍기",
+    "에어컨 사용 줄이기",
+    "잔반 남기지 않기",
+    "가까운 거리는 걸어가기",
+];
+
+function pickAction() {
+    const rand = Math.floor(Math.random() * actions.length);
+    document.getElementById("actionBox").innerText = actions[rand];
+}
+
+
+/* ✅ 탄소발자국 계산 */
+function calcCarbon() {
+    let bus = Number(document.getElementById("bus").value);
+    let elec = Number(document.getElementById("elec").value);
+
+    let total = bus * 0.003 + elec * 0.5;
+
+    document.getElementById("carbonResult").innerText =
+        "오늘 예상 배출량: " + total.toFixed(2) + " kg CO₂";
+}
+
+
+/* ✅ 지역별 기후 영향 안내 */
+function showRegion() {
+    let value = document.getElementById("region").value;
+    let text = "";
+
+    if (value == "seoul") text = "폭염 및 미세먼지 증가로 건강 위험↑";
+    if (value == "busan") text = "해수면 상승 → 해안 침식 가능성↑";
+    if (value == "incheon") text = "산업단지 영향으로 미세먼지↑";
+    if (value == "jeju") text = "태풍 강도 증가 및 생태계 변화↑";
+
+    document.getElementById("regionBox").innerText = text;
+}
+</script>
+
+</body>
+</html>
